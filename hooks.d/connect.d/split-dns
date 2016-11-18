@@ -1,0 +1,5 @@
+### Split DNS through dnsmasq ###
+
+INTERNAL_IP4_DNS=
+INTERNAL_IP6_DNS=
+CISCO_DEF_DOMAIN=

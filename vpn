@@ -1,0 +1,33 @@
+#!/bin/sh
+
+# small openconnect wrapper
+
+[ $# -neq $2 ] ; then
+  CMD=$1
+
+case $cmd in
+
+  up)
+
+    PID=$(pidof openconnect)
+    if [ -z "$PID" ]; then
+      echo $PASS | openconnect --user=$USER --authgroup=$AUTHGROUP --no-cert-check -b $URL
+      --config=/home/archf/.vpn/vpnc.conf token-mode=rsa --authenticate
+      sslvpn.comcast.net/linux
+    else
+      echo "openconnect process $PID already running."
+    fi
+    exit 0
+  else
+    PID=$(pidof openconnect)
+    if [ ! -z "$PID" ]; then
+      sudo kill $PID
+    else
+      echo "openconnect process not running."
+    fi
+    exit 0
+  fi
+else
+  echo "Usage: $0 start|stop"
+  exit 1
+fi
