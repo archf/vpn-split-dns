@@ -27,6 +27,7 @@ dnsmasq:
 			/bin/cp $$i /etc/NetworkManager/dnsmasq.d/ ;		\
 	done
 
+.PHONY: vpn
 vpn:
 	mkdir -p ~/bin
-	/bin/cp vpn ~/bin/
+	/bin/cp vpn ~/bin/vpn
