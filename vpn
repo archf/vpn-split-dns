@@ -1,33 +1,71 @@
 #!/bin/sh
 
-# small openconnect wrapper
+# simple openconnect wrapper
 
-[ $# -neq $2 ] ; then
-  CMD=$1
+if [ $# -ne 2 ]
+then
+  echo "missing arg"
+  usage
+fi
+
+CUSTOMER=$1
+cmd=$2
+
+CMD_OPTS=
+CUSTOMERCONF=~/.vpn/${CUSTOMER}.conf
+PIDFILE=/run/openconnect.pid
+PID=$(cat $PIDFILE)
+
+usage()
+{
+  echo "USAGE: sudo vpn <customer> up|down"
+  exit 1
+}
+vpn_up()
+{
+  [ -f $PIDFILE ]
+
+  if [ -f $CUSTOMERCONF ]
+  then
+    while read line
+    do
+      CMD_OPTS="$CMD_OPTS $line"
+      # echo $CMD_OPTS
+    done < $CUSTOMERCONF
+  else
+    echo "$CUSTOMERCONF not found!"
+    exit 1
+  fi
+
+  # PID=$(pidof openconnect)
+
+  # if [ -z "$PID" ]; then
+    sudo openconnect --background --pid-file=$PIDFILE $CMD_OPTS
+
+  # else
+  #   echo "openconnect process $PID already running."
+  # fi
+
+  # exit 0
+}
+
+vpn_down()
+{
+  PID=$(. PIDFILE)
+  if [ ! -z "$PID" ]; then
+    sudo kill $PID
+  else
+    echo "openconnect process not running."
+  fi
+  exit 0
+}
 
 case $cmd in
-
   up)
-
-    PID=$(pidof openconnect)
-    if [ -z "$PID" ]; then
-      echo $PASS | openconnect --user=$USER --authgroup=$AUTHGROUP --no-cert-check -b $URL
-      --config=/home/archf/.vpn/vpnc.conf token-mode=rsa --authenticate
-      sslvpn.comcast.net/linux
-    else
-      echo "openconnect process $PID already running."
-    fi
-    exit 0
-  else
-    PID=$(pidof openconnect)
-    if [ ! -z "$PID" ]; then
-      sudo kill $PID
-    else
-      echo "openconnect process not running."
-    fi
-    exit 0
-  fi
-else
-  echo "Usage: $0 start|stop"
-  exit 1
-fi
+    vpn_up;;
+  down)
+    vpn_down;;
+  *)
+  usage
+  ;;
+esac
