@@ -16,7 +16,7 @@ dnsmasq when using split dns for connections not managed by NetworkManager.
 
 # openconnect wrapper
 
-To install the wrapper script i `~/bin`, just do:
+To install the wrapper script in `~/bin`, just do:
 
 ```
 make vpn
