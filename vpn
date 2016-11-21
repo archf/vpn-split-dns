@@ -14,7 +14,7 @@ cmd=$2
 CMD_OPTS=
 CUSTOMERCONF=~/.vpn/${CUSTOMER}.conf
 PIDFILE=/run/openconnect.pid
-PID=$(cat $PIDFILE)
+[ -f $PIDFILE ] && PID=$(cat $PIDFILE)
 
 usage()
 {
@@ -23,7 +23,6 @@ usage()
 }
 vpn_up()
 {
-  [ -f $PIDFILE ]
 
   if [ -f $CUSTOMERCONF ]
   then
@@ -38,21 +37,19 @@ vpn_up()
   fi
 
   # PID=$(pidof openconnect)
-
-  # if [ -z "$PID" ]; then
+  if [ ! -f $PIDFILE ]
+  then
     sudo openconnect --background --pid-file=$PIDFILE $CMD_OPTS
-
-  # else
-  #   echo "openconnect process $PID already running."
-  # fi
+  else
+    echo "openconnect process $PID already running."
+  fi
 
   # exit 0
 }
 
 vpn_down()
 {
-  PID=$(. PIDFILE)
-  if [ ! -z "$PID" ]; then
+  if [ -f "$PIDFILE" ]; then
     sudo kill $PID
   else
     echo "openconnect process not running."
