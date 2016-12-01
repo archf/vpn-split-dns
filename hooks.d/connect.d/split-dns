@@ -1,5 +1,33 @@
 ### Split DNS through dnsmasq ###
 
+echo "Received following DNS parameters from concentrator:"
+for ns in $INTERNAL_IP4_DNS
+do
+  echo "nameserver $ns"
+done
+
+for ns in $INTERNAL_IP6_DNS
+do
+  echo "nameserver $ns"
+done
+
+echo "search: $CISCO_DEF_DOMAIN"
+
+CISCO_DEF_DOMAIN=$(echo ${CISCO_DEF_DOMAIN} | tr -d  ',' | tr ' ' '/')
+
+echo "DNS configuration for dnsmasq:"
+
+for ns in $INTERNAL_IP4_DNS
+do
+  echo "server=/${CISCO_DEF_DOMAIN}/${ns}"
+done
+
+for ns in $INTERNAL_IP6_DNS
+do
+  echo "server=/${CISCO_DEF_DOMAIN}/${ns}"
+done
+
+# unset to prevent resolv.conf update
 INTERNAL_IP4_DNS=
 INTERNAL_IP6_DNS=
 CISCO_DEF_DOMAIN=

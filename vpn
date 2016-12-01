@@ -51,6 +51,7 @@ vpn_down()
 {
   if [ -f "$PIDFILE" ]; then
     sudo kill $PID
+    sudo rm $PIDFILE
   else
     echo "openconnect process not running."
   fi
