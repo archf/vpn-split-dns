@@ -13,7 +13,7 @@ done
 
 echo "search: $CISCO_DEF_DOMAIN"
 
-CISCO_DEF_DOMAIN=$(echo ${CISCO_DEF_DOMAIN} | tr -d  ',' | tr ' ' '/')
+CISCO_DEF_DOMAIN=$(echo ${CISCO_DEF_DOMAIN} | tr ',' ' ' | tr ' ' '/')
 
 echo "DNS configuration for dnsmasq:"
 
