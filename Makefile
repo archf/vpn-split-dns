@@ -1,15 +1,11 @@
 VPNC-SCRIPT = "http://git.infradead.org/users/dwmw2/vpnc-scripts.git/blob_plain/refs/heads/master:/vpnc-script"
 VPNC-SCRIPTDIR = "/usr/share/vpnc-scripts"
 VPNC-HOOKDIR = "/etc/vpnc"
-
-TARGET = ~/bin/vpn
+BIN = ~/bin/vpn
 
 .PHONY: install vpnc-script vpnc-hooks dnsmasq update vpn
 
-install: vpnc-script vpnc-hooks dnsmasq $(TARGET)
-
-# for convenience
-vpn: $(TARGET)
+install: vpnc-script vpnc-hooks dnsmasq $(BIN)
 
 vpnc-script:
 	@echo "backup old vpnc-script"
@@ -35,8 +31,12 @@ dnsmasq:
 			/bin/cp $$i /etc/NetworkManager/dnsmasq.d/ ;		\
 	done
 
-$(TARGET):
-	install -D vpn $@
-
 update:
 	@git pull --rebase
+
+.PHONY: vpn
+vpn: $(BIN)
+
+$(BIN):
+	ln -s $(PWD)/$(@F) $@
+	@echo "All done! Make sure ~/bin is in your PATH"
