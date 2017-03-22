@@ -25,3 +25,13 @@ make vpn
 usage: `sudo vpn <customer> up|down`
 
 Where <customer> is a file `~/.vpn/` of the form <customer>.conf
+
+# Using a systemd service
+
+This will install the `openconnect@.service` file in the systemd load path
+
+```
+make systemd_service
+```
+
+usage: `systemctl --user openconnect@customer.service`

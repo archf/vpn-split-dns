@@ -2,10 +2,18 @@ VPNC-SCRIPT = "http://git.infradead.org/users/dwmw2/vpnc-scripts.git/blob_plain/
 VPNC-SCRIPTDIR = "/usr/share/vpnc-scripts"
 VPNC-HOOKDIR = "/etc/vpnc"
 BIN = ~/bin/vpn
+SYSTEMD_LOAD_PATH = /lib/systemd/system
+SYSTEMD_USER_LOAD_PATH = ~/.config/systemd/user
+SERVICES = $(SYSTEMD_LOAD_PATH)/openconnect@.service
+
+# source of a vpn environment files
+VPN_ENV_SRC = ~/.vpn/vpn-env
+# dest of a vpn environment files
+VPN_ENV_PATH = /etc/vpn
 
 .PHONY: install vpnc-script vpnc-hooks dnsmasq update vpn
 
-install: vpnc-script vpnc-hooks dnsmasq $(BIN)
+install: vpnc-script vpnc-hooks dnsmasq $(BIN) $(SERVICES)
 
 vpnc-script:
 	@echo "backup old vpnc-script"
@@ -24,11 +32,10 @@ vpnc-hooks:
 			/bin/cp -r $$i $(VPNC-HOOKDIR)/ ;			\
 	done
 
-# fixme: use install cmd?
 dnsmasq:
 	@echo "install dnsmasq custom configuration"
 	for i in ~/.vpn/dnsmasq/* ; do 											\
-			/bin/cp $$i /etc/NetworkManager/dnsmasq.d/ ;		\
+			install $$i /etc/NetworkManager/dnsmasq.d/ ;		\
 	done
 
 update:
@@ -40,3 +47,14 @@ vpn: $(BIN)
 $(BIN):
 	ln -s $(PWD)/$(@F) $@
 	@echo "All done! Make sure ~/bin is in your PATH"
+
+.PHONY: systemd_services
+systemd_services: $(SERVICES)
+
+$(SERVICES):
+	install -m 622 $(PWD)/$(@F) $@
+
+# install all environment files for systemd templated units
+.PHONY: vpnenv
+vpnenv:
+	rsync --recursive --delete $(VPN_ENV_SRC)/* $(VPN_ENV_PATH)/

@@ -1,0 +1,13 @@
+[Unit]
+Description=openconnect vpn - %i
+Documentation=man:openconnect(1)
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/vpn/%i.conf
+ExecStart=/usr/sbin/openconnect --interface=%i ${CMD_OPTS} ${URL}
+#ExecStartPost=[ -n "${ROUTES}" ] && \
+#              for route in $ROUTES; do sudo ip route add $route; done
+
+[Install]
+WantedBy=vpn.target
