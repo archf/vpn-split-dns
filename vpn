@@ -36,12 +36,11 @@ vpn_up()
     exit 1
   fi
 
-  # PID=$(pidof openconnect)
   if [ ! -f $PIDFILE ]
   then
     sudo openconnect --background --pid-file=$PIDFILE $CMD_OPTS
   else
-    echo "openconnect process $PID already running."
+    echo "openconnect process is already running... pid: $PID "
   fi
 
   # exit 0
