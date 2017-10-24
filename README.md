@@ -1,20 +1,30 @@
-# vpn split dns setup
+# VPN split dns
 
 This has been mainly tested on Ubuntu 16.04 LTS.
 
-# Installation
+Purpose of this is to handle properly split DNS properly with VPN connections
+out of Network Manager. Will be required as long as juniper is not supported
+throught NetworkManager.
+
+## Installation
 
 ```
 sudo make install
 ```
 
-# dnsmasq configuration
+This will:
 
-All files you put under `~/.vpn.dnsmasq/` will be moved to
-`/etc/NetworkManager/dnsmasq.d/`. This allows to configure upstream servers for
-dnsmasq when using split dns for connections not managed by NetworkManager.
+* install the openconnect wrapper in your path (see [openconnect wrapperwrapper](#openconnect-wrapper below)).
+* install dnsmasq custom configuration files
 
-# openconnect wrapper
+## dnsmasq configuration
+
+All files you put under `~/.vpn/dnsmasq.d/` will be moved to
+`/etc/NetworkManager/dnsmasq.d/`. This allows to explicitely configure upstream
+servers for dnsmasq when using split dns for connections not managed by
+NetworkManager and avoid dns leak.
+
+## openconnect wrapper
 
 To install the wrapper script in `~/bin`, just do:
 
@@ -24,4 +34,14 @@ make vpn
 
 usage: `sudo vpn <customer> up|down`
 
-Where <customer> is a file `~/.vpn/` of the form <customer>.conf
+Where <customer> is a file `~/.vpn/` of the form `<customer>.conf` where each
+line contains valid openconnect argument.
+
+E.G>:
+
+```
+--juniper
+--user=foo-farcha001
+--interface=<myifacename>
+<vpn gateway url>
+```
