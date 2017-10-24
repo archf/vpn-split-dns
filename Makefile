@@ -4,7 +4,7 @@ VPNC-HOOKDIR = "/etc/vpnc"
 BIN = ~/bin/vpn
 SUCCESS_MSG = "All done! Make sure ~/bin is in your PATH"
 
-.PHONY: install vpnc-script vpnc-hooks dnsmasq update vpn
+.PHONY: install vpnc-script vpnc-hooks dnsmasq update vpn uninstall
 
 install: vpnc-script vpnc-hooks dnsmasq $(BIN)
 
@@ -40,3 +40,6 @@ vpn: $(BIN)
 $(BIN):
 	ln -s $(PWD)/$(@F) $@
 	@echo $(SUCCESS_MSG)
+
+uninstall:
+	rm -f $(BIN)
