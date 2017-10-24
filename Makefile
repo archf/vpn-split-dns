@@ -1,8 +1,8 @@
 VPNC-SCRIPT = "http://git.infradead.org/users/dwmw2/vpnc-scripts.git/blob_plain/refs/heads/master:/vpnc-script"
-	VPNC-SCRIPTDIR = "/usr/share/vpnc-scripts"
-	VPNC-HOOKDIR = "/etc/vpnc"
-	BIN = ~/bin/vpn
-	SUCCESS_MSG = "All done! Make sure ~/bin is in your PATH"
+VPNC-SCRIPTDIR = "/usr/share/vpnc-scripts"
+VPNC-HOOKDIR = "/etc/vpnc"
+BIN = ~/bin/vpn
+SUCCESS_MSG = "All done! Make sure ~/bin is in your PATH"
 
 .PHONY: install vpnc-script vpnc-hooks dnsmasq update vpn
 
