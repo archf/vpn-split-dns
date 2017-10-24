@@ -14,7 +14,7 @@ sudo make install
 
 This will:
 
-* install the openconnect wrapper in your path (see [openconnect wrapperwrapper](#openconnect-wrapper below)).
+* install the openconnect wrapper in your path. See [openconnect wrapper](#openconnect-wrapper) below.
 * install dnsmasq custom configuration files
 
 ## dnsmasq configuration
@@ -37,11 +37,11 @@ usage: `sudo vpn <customer> up|down`
 Where <customer> is a file `~/.vpn/` of the form `<customer>.conf` where each
 line contains valid openconnect argument.
 
-E.G>:
+E.G:
 
 ```
 --juniper
---user=foo-farcha001
+--user=foo
 --interface=<myifacename>
 <vpn gateway url>
 ```

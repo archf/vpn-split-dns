@@ -42,4 +42,4 @@ $(BIN):
 	@echo $(SUCCESS_MSG)
 
 uninstall:
-	rm -f $(BIN)
+	rm dns-f $(BIN)
