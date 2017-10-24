@@ -38,7 +38,7 @@ update:
 vpn: $(BIN)
 
 $(BIN):
-	ln -s $(PWD)/$(@F) $@
+	ln -s $(CURDIR)/$(@F) $@
 	@echo $(SUCCESS_MSG)
 
 uninstall:
