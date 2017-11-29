@@ -1,6 +1,9 @@
 VPNC-SCRIPT = "http://git.infradead.org/users/dwmw2/vpnc-scripts.git/blob_plain/refs/heads/master:/vpnc-script"
-VPNC-SCRIPTDIR = "/usr/share/vpnc-scripts"
-VPNC-HOOKDIR = "/etc/vpnc"
+# Debian/Ubuntu
+VPNC-SCRIPTDIR = /usr/share/vpnc-scripts
+# Fedora/RHEL/CentOS
+# VPNC-SCRIPTDIR = /etc/vpnc
+VPNC-HOOKDIR = /etc/vpnc
 BIN = ~/bin/vpn
 SUCCESS_MSG = "All done! Make sure ~/bin is in your PATH"
 
@@ -10,13 +13,14 @@ install: vpnc-script vpnc-hooks dnsmasq $(BIN)
 
 vpnc-script:
 	@echo "updating to most recent vpnc-script"
-	@echo "backup old vpnc-script"
+	@echo "backup old vpnc-script directory first..."
 	/bin/mv $(VPNC-SCRIPTDIR)/vpnc-script \
 		$(VPNC-SCRIPTDIR)/vpnc-script.$$(date "+%Y%m%d%S")
+	@echo "...done"
 	@echo "installing latest vpnc-script"
 	/usr/bin/wget $(VPNC-SCRIPT) -O $(VPNC-SCRIPTDIR)/vpnc-script
-	/bin/chown root:root /usr/share/vpnc-scripts/vpnc-script
-	/bin/chmod +x /usr/share/vpnc-scripts/vpnc-script
+	/bin/chown root:root $(VPNC-SCRIPTDIR)/vpnc-script
+	/bin/chmod +x $(VPNC-SCRIPTDIR)/vpnc-script
 
 vpnc-hooks:
 	@echo "install hooks from '~/.vpn/hooks.d'"
