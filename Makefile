@@ -25,6 +25,8 @@ vpnc-hooks:
 		/usr/bin/sudo	/bin/cp -r $$i $(VPNC-HOOKDIR)/ ; \
 		done
 
+# todo: replace by 'install'
+# fixme: test for existance of '~/.vpn/dnsmasq.d/*'
 dnsmasq:
 	@echo "install dnsmasq custom configuration"
 	for i in ~/.vpn/dnsmasq.d/* ; do \
@@ -37,9 +39,9 @@ update:
 .PHONY: vpn
 vpn: $(BIN)
 
-$(BIN):
+$(BIN): dnsmasq
 	ln -s $(CURDIR)/$(@F) $@
 	@echo $(SUCCESS_MSG)
 
 uninstall:
-	rm dns-f $(BIN)
+	rm -f $(BIN)
