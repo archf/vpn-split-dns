@@ -7,9 +7,9 @@ VPNC-HOOKDIR = /etc/vpnc
 BIN = ~/bin/vpn
 SUCCESS_MSG = "All done! Make sure ~/bin is in your PATH"
 
-.PHONY: install vpnc-script vpnc-hooks dnsmasq update vpn uninstall
+.PHONY: install vpnc-script vpnc-hooks update vpn uninstall
 
-install: vpnc-script vpnc-hooks dnsmasq $(BIN)
+install: vpnc-script vpnc-hooks $(BIN)
 
 vpnc-script:
 	@echo "updating to most recent vpnc-script"
@@ -26,16 +26,14 @@ vpnc-hooks:
 	@echo "install hooks from '~/.vpn/hooks.d'"
 	chmod +x $(VPNC-HOOKDIR)
 	for i in hooks.d/* ; do	\
-		/usr/bin/sudo	/bin/cp -r $$i $(VPNC-HOOKDIR)/ ; \
+		/usr/bin/sudo	/usr/bin/install -r $$i $(VPNC-HOOKDIR)/ ; \
 		done
 
-# todo: replace by 'install'
-# fixme: test for existance of '~/.vpn/dnsmasq.d/*'
-dnsmasq:
-	@echo "install dnsmasq custom configuration"
-	for i in ~/.vpn/dnsmasq.d/* ; do \
-		/usr/bin/sudo /bin/cp $$i /etc/NetworkManager/dnsmasq.d/ ; \
-		done
+# dnsmasq:
+# 	@echo "install dnsmasq custom configuration"
+# 	for i in ~/.vpn/dnsmasq.d/* ; do \
+# 		/usr/bin/sudo /bin/cp $$i /etc/NetworkManager/dnsmasq.d/ ; \
+# 		done
 
 update:
 	@git pull --rebase
@@ -43,7 +41,7 @@ update:
 .PHONY: vpn
 vpn: $(BIN)
 
-$(BIN): dnsmasq
+$(BIN):
 	ln -s $(CURDIR)/$(@F) $@
 	@echo $(SUCCESS_MSG)
 
